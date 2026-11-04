@@ -18,7 +18,7 @@ Object.entries(lines).forEach(([id,line])=>{
     const s=make('g',{class:'station',transform:`translate(${x} ${y})`,tabindex:'0',role:'button','aria-label':line.stations[i]});
     s.append(make('circle',{r:6}));
     const text=make('text',{x:id==='M2'?14:0,y:id==='M2'?4:(i%2?-14:22),'text-anchor':id==='M2'?'start':'middle'});text.textContent=line.stations[i];s.append(text);
-    s.addEventListener('click',()=>showStation(line,line.stations[i]));g.append(s);
+    s.addEventListener('click',()=>showStation(id,line,line.stations[i],i));g.append(s);
   });svg.append(g);
 });
 
@@ -77,7 +77,13 @@ createTrains();requestAnimationFrame(animate);
 setInterval(createTrains,60_000);
 
 const dialog=document.querySelector('#stationDialog');
-function showStation(line,name){dialog.querySelector('h2').textContent=name;dialog.querySelector('.line-name').textContent=line.name;dialog.querySelector('.line-name').style.color=line.color;dialog.querySelector('.arrival strong').textContent=`${1+Math.floor(Math.random()*5)} хв`;dialog.showModal()}
+function showStation(id,line,name,index){
+  dialog.querySelector('h2').textContent=name;dialog.querySelector('.line-name').textContent=line.name;dialog.querySelector('.line-name').style.color=line.color;
+  const now=secondsNow(),interval=intervalAt(now),cfg=schedule[id];
+  if(!interval)dialog.querySelector('.arrival strong').textContent='Рух завершено';
+  else{const stationOffset=index*(cfg.segment+cfg.dwell)+cfg.offset,wait=(interval-((now-6*3600-stationOffset)%interval)+interval)%interval;dialog.querySelector('.arrival strong').textContent=wait<45?'< 1 хв':`${Math.ceil(wait/60)} хв`}
+  dialog.showModal();
+}
 dialog.querySelector('.close').onclick=()=>dialog.close();dialog.onclick=e=>{if(e.target===dialog)dialog.close()};
 document.querySelectorAll('.legend button').forEach(btn=>btn.onclick=()=>{const active=btn.dataset.line;const was=btn.classList.contains('active');document.querySelectorAll('.legend button').forEach(b=>b.classList.toggle('dim',!was&&b!==btn));document.querySelectorAll('#metroMap>[data-line]').forEach(g=>g.style.opacity=was||g.dataset.line===active?'1':'.12');btn.classList.toggle('active',!was)});
 setInterval(()=>document.querySelector('#clock').textContent=new Date().toLocaleTimeString('uk-UA',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),1000);
