@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#07111f" />
+    <meta name="description" content="Онлайн-карта руху поїздів Київського метрополітену" />
+    <title>Kyiv Metro Live</title>
+  </head>
+  <body>
+    <main>
+      <header class="topbar">
+        <div class="brand"><span class="brand-mark">M</span><div><b>KYIV METRO</b><small>LIVE BOARD</small></div></div>
+        <div class="status"><i></i><span id="statusText">Деморежим</span><time id="clock"></time></div>
+      </header>
+      <section class="hero">
+        <div><p class="eyebrow">МІСТО В РУСІ</p><h1>Київське метро<br><em>прямо зараз</em></h1></div>
+        <div class="stats"><article><strong id="trainCount">0</strong><span>поїздів на лініях</span></article><article><strong>52</strong><span>діючі станції</span></article></div>
+      </section>
+      <section class="board">
+        <div class="map-wrap"><svg id="metroMap" viewBox="0 0 1000 680" role="img" aria-label="Схема Київського метро"></svg></div>
+        <aside class="legend">
+          <h2>Лінії</h2>
+          <button data-line="M1"><i class="red"></i><span><b>Червона</b><small>Академмістечко — Лісова</small></span></button>
+          <button data-line="M2"><i class="blue"></i><span><b>Синя</b><small>Героїв Дніпра — Теремки</small></span></button>
+          <button data-line="M3"><i class="green"></i><span><b>Зелена</b><small>Сирець — Червоний хутір</small></span></button>
+          <div class="hint"><span>●</span> Натисніть станцію, щоб побачити деталі</div>
+        </aside>
+      </section>
+      <footer><span>Неофіційний експериментальний проєкт</span><span>Дані оновлюються автоматично</span></footer>
+    </main>
+    <dialog id="stationDialog"><button class="close" aria-label="Закрити">×</button><p class="eyebrow">СТАНЦІЯ</p><h2></h2><p class="line-name"></p><div class="arrival"><span>Наступний поїзд</span><strong></strong></div></dialog>
+    <script type="module" src="/src.js"></script>
+  </body>
+</html>
